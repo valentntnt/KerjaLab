@@ -1,0 +1,90 @@
+# KerjaLab — aplikasi multi-tier (frontend + backend + database) di localhost.
+# Jalankan:  cp .env.example .env  &&  docker compose up -d --build
+# Buka:      http://localhost:3000
+name: kerjalab
+
+services:
+  # ---------- Tier 3: Database ----------
+  db:
+    image: postgres:16.6-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?isi POSTGRES_USER di .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?isi POSTGRES_PASSWORD di .env}
+      POSTGRES_DB: ${POSTGRES_DB:?isi POSTGRES_DB di .env}
+    volumes:
+      - kerjalab_pgdata:/var/lib/postgresql/data   # named volume: data bertahan setelah `down`
+    networks: [kerjalab-net]
+    # Tidak ada "ports": DB hanya dapat dijangkau dari dalam network Docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  # ---------- Tier 2: Backend API ----------
+  backend:
+    build:
+      context: ./backend
+    image: kerjalab-backend:local
+    restart: unless-stopped
+    environment:
+      PORT: 4000
+      DB_HOST: db                 # nama service, bukan IP / localhost
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET:?isi JWT_SECRET di .env}
+      AUTH_MODE: ${AUTH_MODE:-dev}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      APP_TZ: ${APP_TZ:-Asia/Jakarta}
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [kerjalab-net]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4000/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  # ---------- Tier 1: Frontend (Next.js) ----------
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        BACKEND_URL: http://backend:4000
+    image: kerjalab-frontend:local
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks: [kerjalab-net]
+
+  # ---------- Tools (opsional): hanya jalan dengan --profile tools ----------
+  adminer:
+    image: adminer:4.8.1
+    profiles: ["tools"]
+    restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [kerjalab-net]
+
+networks:
+  kerjalab-net:
+    driver: bridge
+
+volumes:
+  kerjalab_pgdata:
