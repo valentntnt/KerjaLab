@@ -101,7 +101,7 @@ docker-compose.yml   .env.example   docs/
      <img width="1583" height="791" alt="Screenshot 2026-11-10 092309" src="https://github.com/user-attachments/assets/475c7df3-f56a-4d86-9a12-d0765950abe7" />
 
 ## Tautan
-- Artikel: _(isi)_
+- Artikel: https://dev.to/valent_steveasman_0111b6/kerjalab-simulasi-kerja-multi-tier-dengan-docker-compose-di-localhost-1k2a
 - Video YouTube: _(isi)_
 
 ## Sumber & atribusi
