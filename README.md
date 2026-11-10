@@ -73,7 +73,32 @@ docker-compose.yml   .env.example   docs/
 ```
 
 ## Screenshot
-_(isi: docker compose ps, curl 200/201, uji persistensi, tampilan aplikasi)_
+1) Uji docker compose ps
+<img width="1206" height="112" alt="image" src="https://github.com/user-attachments/assets/3a644dda-9ad3-4106-bd65-30eaa28b364e" />
+
+
+2) Uji endpoint dengan curl
+  - curl -i http://localhost:4000/health
+
+    <img width="450" height="205" alt="image" src="https://github.com/user-attachments/assets/a7ae2349-49c6-4af3-8c75-902275743569" />
+  - curl -i http://localhost:4000/api/config
+
+    <img width="443" height="208" alt="image" src="https://github.com/user-attachments/assets/f3d1c95f-03ca-488d-a828-6f4fb087bb6a" />
+  - curl -i http://localhost:4000/api/simulations
+
+    <img width="442" height="206" alt="image" src="https://github.com/user-attachments/assets/4b976409-98d5-49ec-ad5f-dc269dc006a0" />
+
+
+3) Uji persistensi
+   - Akun dengan data lvl, skill, koin
+
+     <img width="1919" height="1032" alt="Screenshot 2026-11-10 092116" src="https://github.com/user-attachments/assets/4f9e6714-df66-4032-a9d6-84cf30196d00" />
+   - Menghapus & jalan ulang kontainer
+
+     <img width="442" height="207" alt="image" src="https://github.com/user-attachments/assets/06bbd891-fa8b-4592-bda1-61e4e1c0c500" />
+   - Persistensi volume terbukti
+
+     <img width="1583" height="791" alt="Screenshot 2026-11-10 092309" src="https://github.com/user-attachments/assets/475c7df3-f56a-4d86-9a12-d0765950abe7" />
 
 ## Tautan
 - Artikel: _(isi)_
@@ -81,6 +106,3 @@ _(isi: docker compose ps, curl 200/201, uji persistensi, tampilan aplikasi)_
 
 ## Sumber & atribusi
 Next.js, React, Express, node-postgres, google-auth-library, jsonwebtoken (open-source, lisensi MIT/Apache). Starter: `npm init` / struktur `app/` Next.js standar. Gambar Docker resmi: `node`, `postgres`, `adminer`.
-
-## AI Usage Declaration
-_(isi sesuai ketentuan: alat yang dipakai, bagian yang dibantu, contoh prompt utama)_
