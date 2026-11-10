@@ -102,7 +102,7 @@ docker-compose.yml   .env.example   docs/
 
 ## Tautan
 - Artikel: https://dev.to/valent_steveasman_0111b6/kerjalab-simulasi-kerja-multi-tier-dengan-docker-compose-di-localhost-1k2a
-- Video YouTube: _(isi)_
+- Video YouTube: https://youtu.be/yQvmDvVZaOY
 
 ## Sumber & atribusi
 Next.js, React, Express, node-postgres, google-auth-library, jsonwebtoken (open-source, lisensi MIT/Apache). Starter: `npm init` / struktur `app/` Next.js standar. Gambar Docker resmi: `node`, `postgres`, `adminer`.
